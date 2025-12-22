@@ -32,14 +32,6 @@ Example cases:
 
 You can edit this mapping to match your environment.
 
-## Changelog
-### v2.2 — Aug 27, 2025
-- Hotfix: no longer passes temp file paths directly into the pktmon driver.
-
-### v2.1 — Aug 27, 2025
-- Better path handling (works with spaces / OneDrive).
-- Added delay because some switches send LLDP a few seconds after link-up.
-
 ## License
 GPL-3.0  
 https://www.gnu.org/licenses/gpl-3.0.html
