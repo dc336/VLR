@@ -8,7 +8,7 @@ Batch script for Windows that listens for LLDP and CDP frames, grabs switch port
 - VLAN ID / PVID
 
 ## How it works
-1. Uses `pktmon` (built into Windows) with a filter for LLDP (`01-80-C2-00-00-0E`) and CPD (`01-00-0C-CC-CC-CC`).
+1. Uses `pktmon` (built into Windows) with a filter for LLDP (`01-80-C2-00-00-0E`) and CDP (`01-00-0C-CC-CC-CC`).
 2. Waits until a frame is actually seen.
 3. Buffers a few seconds of traffic.
 4. Stops capture and converts it to text.
