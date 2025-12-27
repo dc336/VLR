@@ -1,6 +1,6 @@
 # Virtual Link Runner
 
-Batch script for Windows that listens for LLDP, grabs switch port info, and shows you what you're plugged into.
+Batch script for Windows that listens for LLDP and CDP frames, grabs switch port info, and shows you what you're plugged into.
 
 ## What it shows
 - System Name
@@ -8,11 +8,11 @@ Batch script for Windows that listens for LLDP, grabs switch port info, and show
 - VLAN ID / PVID
 
 ## How it works
-1. Uses `pktmon` (built into Windows) with a filter for LLDP (`01-80-C2-00-00-0E`).
-2. Waits until an LLDP frame is actually seen.
+1. Uses `pktmon` (built into Windows) with a filter for LLDP (`01-80-C2-00-00-0E`) and CPD (`01-00-0C-CC-CC-CC`).
+2. Waits until a frame is actually seen.
 3. Buffers a few seconds of traffic.
 4. Stops capture and converts it to text.
-5. Parses only **received** LLDP frames, not what your NIC advertises.
+5. Parses only **received** LLDP/CDP frames, not what your NIC advertises.
 6. Prints results in color.
 
 After it prints, press any key to run it again on another jack.
