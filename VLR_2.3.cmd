@@ -57,7 +57,7 @@ set "TXT=%TEMP%\capture.txt"
 	echo.              #          #######     #     #  			
 	echo.
 	echo.                  VIRTUAL LINK RUNNER										
-	echo.                       v 2.2 						
+	echo.                       v 2.3						
 	echo.						
 	echo. Port information is sent within several seconds of 	
 	echo. a new link-up connection or automatically every 30	
@@ -73,12 +73,15 @@ set "TXT=%TEMP%\capture.txt"
 	pktmon reset >nul 2>&1
 	pktmon stop  >nul 2>&1
 	pktmon filter remove >nul 2>&1
+
+	:: LLDP + CDP filters
 	pktmon filter add LLDP -m 01-80-C2-00-00-0E >nul 2>&1
+	pktmon filter add CDP  -m 01-00-0C-CC-CC-CC >nul 2>&1
 
 	:: Start capture on all NICs, all successful packets, any size packets
 	pktmon start --capture --type flow --pkt-size 0 --file-name "%ETL%" --comp nics >nul 2>&1
 
-	echo. %GREEN%Waiting for LLDP frame...%RESET% %DIMGREEN%(insert cable now)%RESET%
+	echo. %GREEN%Waiting for LLDP/CDP frame...%RESET% %DIMGREEN%(insert cable now)%RESET%
 
 :checkCounters
 	:: Convenient function lets us see if a frame matching the filter has been captured
@@ -118,6 +121,8 @@ set "TXT=%TEMP%\capture.txt"
 		)
 		:: EQU 1 = Find receiving
 		if !InRx! EQU 1 (
+
+			:: LLDP
 			if not defined portDesc if not "!line!"=="!line:Port Description=!" (
 				for %%t in (!line!) do set "portDesc=%%t"
 			)
@@ -127,6 +132,19 @@ set "TXT=%TEMP%\capture.txt"
 			)
 
 			if not defined pvid if not "!line!"=="!line:PVID=!" (
+				for %%t in (!line!) do set "pvid=%%t"
+			)
+
+			:: CDP (added)
+			if not defined sysName if not "!line!"=="!line:Device-ID=!" (
+				for %%t in (!line!) do set "sysName=%%t"
+			)
+
+			if not defined portDesc if not "!line!"=="!line:Port-ID=!" (
+				for %%t in (!line!) do set "portDesc=%%t"
+			)
+
+			if not defined pvid if not "!line!"=="!line:Native VLAN ID=!" (
 				for %%t in (!line!) do set "pvid=%%t"
 			)
 
